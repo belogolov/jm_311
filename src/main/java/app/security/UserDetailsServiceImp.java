@@ -20,22 +20,17 @@ public class UserDetailsServiceImp implements UserDetailsService {
     private final UserService userService;
 
     @Autowired
-    public UserDetailsServiceImp(UserService userDao) {
-        this.userService = userDao;
+    public UserDetailsServiceImp(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return userService.getUserByEmail(username);
         User user = userService.getUserByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException(username + " - not found");
         }
-
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+        return user;
     }
+
 }

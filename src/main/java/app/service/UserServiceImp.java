@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +44,7 @@ public class UserServiceImp implements UserService {
         userRepo.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void update(User user) {
         User dbUser = getUserById(user.getId());
@@ -58,10 +58,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<User> listUsers() {
-        if (userRepo != null) {
-            return userRepo.findAll();
-        }
-        return new ArrayList<>();
+        return userRepo.findAll();
     }
 
     @Override
@@ -76,9 +73,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<Role> listRoles() {
-        if (roleRepo != null) {
-            return roleRepo.findAll();
-        }
-        return new ArrayList<>();
+        return roleRepo.findAll();
+    }
+
+    @Override
+    public Role getRoleById(Long id) {
+        return roleRepo.getOne(id);
     }
 }

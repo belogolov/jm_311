@@ -1,5 +1,8 @@
 package app.security.handler;
 
+import app.model.Role;
+import app.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,21 +20,20 @@ import java.io.IOException;
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Override
+     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
 
         HttpSession session = httpServletRequest.getSession();
 
-        GrantedAuthority gaAdmin = new SimpleGrantedAuthority("ADMIN");
         if (authentication != null) {
             UserDetails authUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             session.setAttribute("authUsername", authUser.getUsername());
             session.setAttribute("authorities", authentication.getAuthorities());
 
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-            if (authentication.getAuthorities().contains(gaAdmin)) {
+            if (authentication.getAuthorities().contains(new Role("ADMIN"))) {
                 httpServletResponse.sendRedirect("/admin");
             } else {
                 httpServletResponse.sendRedirect("/user");

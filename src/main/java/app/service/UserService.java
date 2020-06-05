@@ -11,6 +11,7 @@ public interface UserService {
     List<Role> listRoles();
 
     User getUserById(Long id);
+    Role getRoleById(Long id);
 
     User getUserByEmail(String email);
 
