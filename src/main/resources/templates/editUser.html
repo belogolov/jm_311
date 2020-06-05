@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+
+</head>
+<body>
+<div class="container">
+    <div th:replace="/logout :: logout"/>
+    <h2>Edit user</h2>
+    <form action="#" th:action="@{'edit'}" th:object=${user} method="POST">
+        <label>ID:
+            <input type="text" id="id" th:field="*{id}"><br/>
+        </label>
+
+        <label>Name:
+            <input type="text" id="firstName" th:field="*{firstName}" placeholder="First name"><br/>
+        </label>
+        <label>Last name:
+            <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last name"><br/>
+        </label>
+        <label>Email:
+            <input type="text" id="email" th:field="*{email}" placeholder="e-mail"><br/>
+        </label>
+
+        <label>Password:</label>
+        <input type="text" id="password" th:field="*{password}" placeholder="Password"><br/>
+
+<!--        <input type="text" id="roles" th:field="*{roles}"><br/>-->
+
+            <td>Roles:</td>
+            <td>
+                <th:block th:each="r : ${allRoles}">
+                    <input type="checkbox" name="newRoles" th:field="*{roles}" th:value="${r.getId()}"/>
+                    <label th:text="${r.getName()}"></label>
+                </th:block>
+            </td>
+
+        <h1></h1>
+        <div class="row">
+            <div>
+                <input type="submit" value="Update"/> or <a th:href="@{/admin}">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

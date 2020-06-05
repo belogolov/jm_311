@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+
+<body>
+<div class="container">
+
+    <div th:replace="/logout :: logout"/>
+
+    <div th:switch="${users}">
+        <h2 th:case="null">Users not found</h2>
+        <div th:case="*">
+            <h2>Users</h2>
+            <form th:action="@{'/admin/add'}" method="get">
+                <button type="submit">Add user</button>
+            </form>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>E-mail</th>
+                    <th>Password</th>
+                    <th>Roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.getId()}"></td>
+                    <td th:text="${user.getFirstName()}"></td>
+                    <td th:text="${user.getLastName()}"></td>
+                    <td th:text="${user.getEmail()}"></td>
+                    <td th:text="${user.getPassword()}"></td>
+                    <td th:text="${user.getRoles()}"></td>
+                    <td>
+                        <form th:action="@{'/admin/edit'}" method="get">
+                            <input type="hidden" name="id" th:value="*{user.getId()}" />
+                            <button type="submit">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{'/admin/delete'}" method="get">
+                            <input type="hidden" name="id" th:value="*{user.getId()}" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
