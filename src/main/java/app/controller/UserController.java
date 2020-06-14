@@ -22,7 +22,8 @@ public class UserController {
 	@GetMapping(value = "/user")
 	public String homePage(@ModelAttribute("authUsername") String username, ModelMap model) {
 		model.addAttribute("user", userService.getUserByEmail(username));
-		return "homeUser";
+		model.addAttribute("title", "User page");
+		return "userInfo";
 	}
 
 }

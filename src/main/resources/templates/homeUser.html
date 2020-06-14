@@ -3,34 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}"></title>
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div th:replace="/logout :: logout"/>
-    <h2>Hello user</h2>
-    <form th:object=${user}>
 
-
-        <label>Name:
-            <input type="text" readonly="true" id="firstName" th:field="*{firstName}"><br/>
-        </label>
-        <label>Last name:
-            <input type="text" readonly="true" id="lastName" th:field="*{lastName}"><br/>
-        </label>
-        <label>Email:
-            <input type="text" readonly="true" id="email" th:field="*{email}"><br/>
-        </label>
-
-<!--        <label>Password:</label>-->
-<!--        <input type="text" id="password" th:field="*{password}" placeholder="Password"><br/>-->
-
-        <label>Roles:
-            <input type="text" readonly="true" id="roles" th:field="*{roles}"><br/>
-        </label>
-<!--        <label type="text" id="roles" th:field="*{roles}"/>-->
-
-    </form>
+<div th:fragment="information">
+    <h1>User information page</h1>
+    <div class="container-flex">
+        <div class="card">
+            <h5 class="card-header">About user</h5>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Roles</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:if="${session.containsKey('authUser')}" th:text="${session.authUser.getId()}"></td>
+                        <td th:if="${session.containsKey('authUser')}" th:text="${session.authUser.getFirstName()}"></td>
+                        <td th:if="${session.containsKey('authUser')}" th:text="${session.authUser.getLastName()}"></td>
+                        <td th:if="${session.containsKey('authUser')}" th:text="${session.authUser.getEmail()}"></td>
+                        <td th:if="${session.containsKey('authUser')}" th:text="${session.authUser.printRoles()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

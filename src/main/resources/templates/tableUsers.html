@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div th:fragment="users">
+    <div class="container-flex ">
+        <div class="card">
+            <h5 class="card-header">All users</h5>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Roles</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="userTable : ${users}" scope="row">
+                        <!--                    <th scope="row"></th>-->
+                        <td th:text="${userTable.getId()}"></td>
+                        <td th:text="${userTable.getFirstName()}"></td>
+                        <td th:text="${userTable.getLastName()}"></td>
+                        <td th:text="${userTable.getEmail()}"></td>
+                        <td th:text="${userTable.printRoles()}"></td>
+
+<!--                        Edit Button-->
+
+                        <td>
+<!--                            <form th:action="@{'/admin/edit'}" method="get">-->
+<!--                                <input type="hidden" name="id" th:value="*{user.getId()}" />-->
+<!--                                <button type="submit" class="btn btn-info">Edit</button>-->
+<!--                            </form>-->
+
+                            <button type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#editModal" th:attrappend="data-target=${userTable.getId()}">
+                                Edit
+                            </button>
+
+                            <div th:replace="/editUser :: edit_user"/>
+
+
+                        </td>
+
+<!--                        Delete Button-->
+
+<!--                        <td>-->
+<!--                            <form th:action="@{'/admin/delete'}" method="get">-->
+<!--                                <input type="hidden" name="id" th:value="*{userTable.getId()}" />-->
+<!--                                <button type="submit" class="btn btn-danger">Delete</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+
+<!--                        <td>-->
+<!--                            <form th:action="@{'/admin/delete/' + ${userTable.getId()}}" method="get">-->
+<!--                                <button type="submit" class="btn btn-danger">Delete 2</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+
+                        <td>
+                            <button type="button" class="btn btn-danger btn-primary" data-toggle="modal" data-target="#deleteModal" th:attrappend="data-target=${userTable.getId()}">
+                                Delete
+                            </button>
+                            <div class="modal" tabindex="-1" role="dialog" id="deleteModal" th:attrappend="id=${userTable.getId()}" >
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <form action="#" th:action="@{'admin/delete/' + ${userTable.getId()}}"  method="get">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Edit user</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="idDelete">ID</label>
+                                                    <input th:readonly="true" type="text" class="form-control" id="idDelete" path="id" th:value="${userTable.getId()}" placeholder="id">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="firstNameDelete">First name</label>
+                                                    <input th:readonly="true" type="text" class="form-control" id="firstNameDelete" path="firstName" th:value="${userTable.getFirstName()}" placeholder="First name">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="lastNameDelete">Last name</label>
+                                                    <input th:readonly="true" type="text" class="form-control" id="lastNameDelete" path="lastName" th:value="${userTable.getLastName()}" placeholder="Last name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="emailDelete">Email</label>
+                                                    <input th:readonly="true" type="email" class="form-control" id="emailDelete" path="email" th:value="${userTable.getEmail()}" placeholder="e-mail">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="rolesDelete">Roles</label>
+                                                    <select multiple class="form-control" id="rolesDelete">
+                                                        <th:block th:each="r : ${allRoles}">
+                                                            <option th:readonly="true" th:text="${r.getName()}" ></option>
+                                                        </th:block>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" name="cancel" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="Submit" name="submit" class="btn btn-danger btn-primary">Delete</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+<!--
+<div class="modal" tabindex="-1" role="dialog" id="editModal" th:attrappend="id=${userTable.getId()}" >
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            &lt;!&ndash;            <form action="#" th:action="@{'admin/edit'}" th:object=${user} method="POST">&ndash;&gt;
+            &lt;!&ndash;                                        data-th-object&ndash;&gt;
+            <form action="#" th:action="@{'admin/edit'}" th:object="${userTable}" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit user</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    &lt;!&ndash;<div class="form-group">
+                        <label for="id">ID</label>
+                        <input type="text" class="form-control" id="id" path="id" th:disabled="true" th:value="${userTable.getId()}" placeholder="id">
+                    </div>&ndash;&gt;
+                    <span th:text="${userTable}"></span>
+                    <div class="form-group">
+                        <label for="firstName">First name</label>
+                        <input type="text" class="form-control" id="firstName" th:value="*{firstName}" placeholder="First name">
+                        &lt;!&ndash;                                                    <input type="text" class="form-control" id="firstNameEdit" th:value="${userTable.firstName}" placeholder="First name">&ndash;&gt;
+                    </div>
+
+                    &lt;!&ndash;<div class="form-group">
+                        <label for="lastName">Last name</label>
+                        &lt;!&ndash;                            <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Last name">&ndash;&gt;
+                        <input type="text" class="form-control" id="lastName" path="lastName" th:value="${userTable.getLastName()}" placeholder="Last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        &lt;!&ndash;                            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="e-mail">&ndash;&gt;
+                        <input type="email" class="form-control" id="email" path="email" th:value="${userTable.getEmail()}" placeholder="e-mail">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        &lt;!&ndash;                            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password">&ndash;&gt;
+                        <input type="password" class="form-control" id="password" th:value="${userTable.getPassword()}" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="rolesEdit">Mult Roles</label>
+                        <select multiple class="form-control" id="rolesEdit">
+                            <th:block th:each="r : ${allRoles}">
+                                <option th:text="${r.getName()}" ></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                    <select th:field="*{department.number}">
+                        <option
+                                th:each="r : ${allRoles}"
+                                th:text="${r.getName()}"
+                                th:value="${r.getName()}" />
+                    </select>
+                    </div>&ndash;&gt;
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="cancel" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="Submit" name="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+-->

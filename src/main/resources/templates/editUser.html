@@ -3,47 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}"></title>
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div th:replace="/logout :: logout"/>
-    <h2>Edit user</h2>
-    <form action="#" th:action="@{'edit'}" th:object=${user} method="POST">
-        <label>ID:
-            <input type="text" id="id" th:field="*{id}"><br/>
-        </label>
+<!--<div class="container">-->
+<!--    <div th:replace="/logout :: logout"/>-->
+<!--    <h2>Edit user</h2>-->
+<!--    <form action="#" th:action="@{'edit'}" th:object=${user} method="POST">-->
+<!--        <label>ID:-->
+<!--            <input type="text" id="id" th:field="*{id}"><br/>-->
+<!--        </label>-->
 
-        <label>Name:
-            <input type="text" id="firstName" th:field="*{firstName}" placeholder="First name"><br/>
-        </label>
-        <label>Last name:
-            <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last name"><br/>
-        </label>
-        <label>Email:
-            <input type="text" id="email" th:field="*{email}" placeholder="e-mail"><br/>
-        </label>
+<!--        <label>Name:-->
+<!--            <input type="text" id="firstName" th:field="*{firstName}" placeholder="First name"><br/>-->
+<!--        </label>-->
+<!--        <label>Last name:-->
+<!--            <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last name"><br/>-->
+<!--        </label>-->
+<!--        <label>Email:-->
+<!--            <input type="text" id="email" th:field="*{email}" placeholder="e-mail"><br/>-->
+<!--        </label>-->
 
-        <label>Password:</label>
-        <input type="text" id="password" th:field="*{password}" placeholder="Password"><br/>
+<!--        <label>Password:</label>-->
+<!--        <input type="text" id="password" th:field="*{password}" placeholder="Password"><br/>-->
 
-<!--        <input type="text" id="roles" th:field="*{roles}"><br/>-->
+<!--&lt;!&ndash;        <input type="text" id="roles" th:field="*{roles}"><br/>&ndash;&gt;-->
 
-            <td>Roles:</td>
-            <td>
-                <th:block th:each="r : ${allRoles}">
-                    <input type="checkbox" name="newRoles" th:field="*{roles}" th:value="${r.getId()}"/>
-                    <label th:text="${r.getName()}"></label>
-                </th:block>
-            </td>
+<!--            <td>Roles:</td>-->
+<!--            <td>-->
+<!--                <th:block th:each="r : ${allRoles}">-->
+<!--                    <input type="checkbox" name="newRoles" th:field="*{roles}" th:value="${r.getId()}"/>-->
+<!--                    <label th:text="${r.getName()}"></label>-->
+<!--                </th:block>-->
+<!--            </td>-->
 
-        <h1></h1>
-        <div class="row">
-            <div>
-                <input type="submit" value="Update"/> or <a th:href="@{/admin}">Cancel</a>
+<!--        <h1></h1>-->
+<!--        <div class="row">-->
+<!--            <div>-->
+<!--                <input type="submit" value="Update"/> or <a th:href="@{/admin}">Cancel</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+
+
+<div th:fragment="edit_user">
+
+    <div class="modal" tabindex="-1" role="dialog" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+    <!--            <form action="#" th:action="@{'admin/edit'}" th:object=${user} method="POST">-->
+                <form action="#" th:action="@{'admin/edit'}" th:object="${userR}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit user</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="id">ID</label>
+                            <input type="text" class="form-control" id="id" th:field="${userR.getId()}" placeholder="id">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firstName">First name</label>
+    <!--                            <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="First name">-->
+                            <input type="text" class="form-control" id="firstName" th:field="${userR.getFirstName()}" placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last name</label>
+    <!--                            <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Last name">-->
+                            <input type="text" class="form-control" id="lastName" th:field="${userR.getLastName()}" placeholder="Last name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+    <!--                            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="e-mail">-->
+                            <input type="email" class="form-control" id="email" th:field="${userR.getEmail()}" placeholder="e-mail">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+    <!--                            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password">-->
+                            <input type="password" class="form-control" id="password" th:field="${userR.getPassword()}" placeholder="Password">
+                        </div>
+
+    <!--                        <button name="Submit" type="Submit" th:text="'Add new user'"-->
+    <!--                                class="btn btn-lg btn-success"></button>-->
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" name="cancel" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="Submit" name="submit" class="btn btn-primary">Edit</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 </body>
 </html>

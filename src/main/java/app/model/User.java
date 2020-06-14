@@ -138,4 +138,17 @@ public class User implements UserDetails {
               ", roles=" + roles +
               '}';
    }
+
+   public String printRoles() {
+      StringBuilder sb = new StringBuilder();
+      for (Role role : roles) {
+         sb.append(role);
+         sb.append(", ");
+      }
+      String output = sb.toString();
+      if (output.length() == 0) {
+         return output;
+      }
+      return output.substring(0, output.length() - 2);
+   }
 }

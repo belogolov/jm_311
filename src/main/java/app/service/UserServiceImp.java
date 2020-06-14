@@ -32,9 +32,11 @@ public class UserServiceImp implements UserService {
     @Override
     public void add(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleRepo.getOne(2L));
-        user.setRoles(roles);
+        if (user.getRoles().size() == 0) {
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleRepo.getOne(2L));
+            user.setRoles(roles);
+        }
         userRepo.save(user);
     }
 

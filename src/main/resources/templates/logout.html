@@ -3,12 +3,12 @@
 </head>
 <body>
 <div th:fragment="logout">
-    <div class="container">
-        <logout>
+    <div class="container-fluid justify-content-end" style="padding: 0px">
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" th:if="${session.containsKey('authUser')}" th:text="|${session.authUser.getUsername()} with roles: ${session.authUser.printRoles()}|"></a>
             <a th:href="@{/logout}">Logout</a>
-        </logout>
+        </nav>
     </div>
-
 </div>
 </body>
 </html>

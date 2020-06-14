@@ -4,8 +4,11 @@ import app.model.User;
 import app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -22,7 +25,9 @@ public class AdminController {
 	@GetMapping
 	public String printUsers(ModelMap model) {
 		model.addAttribute("users", userService.listUsers());
-		model.addAttribute("title", "All users");
+		model.addAttribute("title", "Admin panel");
+		model.addAttribute("allRoles", userService.listRoles());
+		model.addAttribute("user", new User());
 		return "listOfUsers";
 	}
 
@@ -45,19 +50,24 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 
-	@GetMapping(value = "/edit")
-	public String editUser(@RequestParam("id") long id, ModelMap model) {
-		User userById = userService.getUserById(id);
-		model.addAttribute("user", userById);
-		model.addAttribute("allRoles", userService.listRoles());
-		model.addAttribute("title", "Edit user");
-		return "editUser";
-	}
-
-	@PostMapping(value = "/edit")
-	public String updateUser(@ModelAttribute("user")User user,
-							 @RequestParam(value = "newRoles", required = false) String[] roles) {
-		userService.update(user);
+	@GetMapping(value = "/delete/{id}")
+	public String deleteUserById(@PathVariable("id") long id) {
+		userService.delete(id);
 		return "redirect:/admin";
 	}
+
+    @GetMapping(value = "/edit")
+    public String editUser(@RequestParam("id") long id, ModelMap model) {
+        User userById = userService.getUserById(id);
+        model.addAttribute("userTable", userById);
+        model.addAttribute("allRoles", userService.listRoles());
+        model.addAttribute("title", "Edit user");
+        return "editUser";
+    }
+
+    @PostMapping(value = "/edit")
+    public String updateUser(@ModelAttribute("userTable")User user) {
+        userService.update(user);
+        return "redirect:/admin";
+    }
 }

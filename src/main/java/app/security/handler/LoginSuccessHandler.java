@@ -1,6 +1,7 @@
 package app.security.handler;
 
 import app.model.Role;
+import app.model.User;
 import app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,8 +29,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         HttpSession session = httpServletRequest.getSession();
 
         if (authentication != null) {
-            UserDetails authUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            session.setAttribute("authUsername", authUser.getUsername());
+            //UserDetails authUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            session.setAttribute("authUsername", authUser.getEmail());
+            session.setAttribute("authUser", authUser);
             session.setAttribute("authorities", authentication.getAuthorities());
 
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
